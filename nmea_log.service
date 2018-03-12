@@ -1,0 +1,12 @@
+[Unit] 
+Description=Startup Script Service
+After=multi-user.target 
+
+[Service]
+Type=idle
+ExecStart=/home/pi/nmealogger.sh
+WorkingDirectory=/home/pi
+User=pi
+
+[Install]
+WantedBy=multi-user.target
