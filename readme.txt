@@ -1,0 +1,1 @@
+These files can be used to setup an NMEA-data-logger with an Raspberry Pi. It uses an UART-stream with 57600 baud as input.
