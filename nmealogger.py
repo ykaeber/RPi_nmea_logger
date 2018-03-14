@@ -1,12 +1,17 @@
 #!/usr/bin/python3
 
-import os, time, sys, glob, datetime, syslog, pynmea2, serial
+import os, time, sys, glob, datetime, syslog, pynmea2, serial, os.path
+from pathlib import Path
+cwd = os.getcwd()
+dataname = 'nmea_datalog_'
 
-def logfilename():
-    now = datetime.datetime.now()
-    return 'NMEA_%0.4d-%0.2d-%0.2d_%0.2d-%0.2d-%0.2d.nmea' % \
-                (now.year, now.month, now.day,
-                 now.hour, now.minute, now.second)
+i = 0
+filename = "%s/%s%s.nmea" % (cwd, dataname, i)
+print(filename)
+while os.path.isfile(filename) :
+	i = i + 1
+	filename = "%s/%s%s.nmea" % (cwd, dataname, i)
+	
                  
 def _scan_ports():
     if sys.platform.startswith('win'):
@@ -47,7 +52,7 @@ try:
                     pynmea2.parse(ser.readline().decode('ascii', errors='replace'))
 
                     # log data
-                    outfname = logfilename()
+                    outfname = filename
                     sys.stderr.write('Logging data on %s to %s\n' % (port, outfname))
                     syslog.syslog('Logging data on %s to %s\n' % (port, outfname))
                     with open(outfname, 'wb') as f:
